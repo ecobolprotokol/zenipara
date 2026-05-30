@@ -23,8 +23,8 @@
 
 ## ⚡ Quick Start
 
-### Prasyarat
-- Node.js 18+
+-### Prasyarat
+- Node.js 20+
 - Git
 - Akun Supabase
 
@@ -104,7 +104,7 @@ Setiap role punya dashboard & permission terpisah. [Lihat detail fitur →](./FE
 ## 📊 Stats
 
 - **Code**: 1,500+ TypeScript components
-- **Database**: 82 migrations, 20+ RPC functions
+- **Database**: 84 migrations, 20+ RPC functions
 - **Tests**: 50+ e2e tests via Playwright
 - **Docs**: 7,000+ lines comprehensive documentation
 - **Performance**: < 2s p95 latency @ 600 concurrent users
@@ -170,10 +170,9 @@ MIT License - Lihat file [LICENSE](./LICENSE)
 - **S-4 (Log):** input/kelola data logistik
 - Dashboard otomatis memetakan bidang dari `jabatan` (`S-1`/`S-3`/`S-4`)
 
-### 🚧 Petugas Jaga / Provost (`guard`)
-- Validasi Gate Pass di pos jaga
+### Petugas Jaga / Provost (dikelola sebagai `prajurit`)
+- Validasi Gate Pass di pos jaga (fungsi kini dikelola oleh modul `pos-jaga`)
 - Pemindaian QR keluar/masuk
-- Akses baca catatan disiplin (`discipline_notes`) untuk pemantauan personel
 
 ### 🪖 Dashboard Prajurit
 - Lihat & kerjakan tugas harian
@@ -214,7 +213,7 @@ MIT License - Lihat file [LICENSE](./LICENSE)
 | `komandan` | KMD | Komando bertingkat (BATALION/KOMPI/PELETON) |
 | `staf` | STF | Input operasional sesuai bidang (S-1/S-3/S-4) |
 | `prajurit` | PRJ | Personal tasks & attendance |
-| `guard` | PJP | Petugas Jaga / Provost: scan gate pass + cek disiplin |
+|- removed -| - | Petugas jaga kini ditangani oleh modul `pos-jaga` dan peran `prajurit` |
 
 ---
 
