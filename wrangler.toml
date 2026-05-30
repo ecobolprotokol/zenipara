@@ -1,7 +1,6 @@
 name = "zenipara"
-main = "./public"
 
 # Build settings are intentionally minimal — adapt to your project build output
 [site]
-bucket = "public"
+bucket = "./dist"
 entry-point = "./"

@@ -32,7 +32,6 @@ const resolveNavSection = (item: NavItem): NavSection => {
 
 const ADMIN_NAV: NavItem[] = [
   { path: ROLE_ROUTE_PATHS.admin_satuan.dashboard,       label: 'Pusat Kendali',  icon: 'LayoutDashboard' },
-  { path: ROLE_ROUTE_PATHS.admin_satuan.satuan,          label: 'Satuan',         icon: 'Building2' },
   { path: ROLE_ROUTE_PATHS.admin_satuan.users,           label: 'Personel',       icon: 'Users' },
   { path: ROLE_ROUTE_PATHS.admin_satuan.analytics,       label: 'Analitik',       icon: 'TrendingUp' },
   { path: ROLE_ROUTE_PATHS.admin_satuan.logistics,       label: 'Logistik',       icon: 'Package' },
@@ -44,7 +43,6 @@ const ADMIN_NAV: NavItem[] = [
   { path: ROLE_ROUTE_PATHS.admin_satuan.kegiatan,        label: 'Kalender Kegiatan', icon: 'CalendarDays' },
   { path: ROLE_ROUTE_PATHS.admin_satuan.gatePassMonitor, label: 'Gate Pass',      icon: 'ClipboardCheck' },
   { path: ROLE_ROUTE_PATHS.admin_satuan.posJaga,         label: 'Pos Jaga',       icon: 'MapPin' },
-  { path: ROLE_ROUTE_PATHS.admin_satuan.audit,           label: 'Audit Log',      icon: 'ScrollText' },
   { path: ROLE_ROUTE_PATHS.admin_satuan.settings,        label: 'Pengaturan',     icon: 'Settings' },
 ];
 
