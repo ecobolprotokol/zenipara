@@ -44,6 +44,7 @@ const ROLE_ALIASES: Record<string, KnownRole | string> = {
   staf: 'staff_satuan',
   staff: 'staff_satuan',
   'staff satuan': 'staff_satuan',
+  'staff operasional': 'staff_satuan',
   staff_satuan: 'staff_satuan',
   'super admin': 'super_admin',
   super_admin: 'super_admin',
@@ -55,8 +56,10 @@ const ROLE_CODE_TO_ROLE: Record<string, KnownRole | string> = {
   SAD: 'super_admin',
   ADS: 'admin_satuan',
   DAN: 'komandan',
+  KMD: 'komandan',
   STF: 'staff_satuan',
   PJT: 'prajurit',
+  PRJ: 'prajurit',
 };
 
 export const ROLE_ACCESS_MAP: Record<KnownRole, string> = {
@@ -128,10 +131,10 @@ export const ROLE_ROUTE_PATHS = {
 export const ROUTE_ROLE_GROUPS = {
   superAdminOnly: ['super_admin'],
   adminOnly: ['admin_satuan'],
-  adminKomandan: ['admin_satuan', 'komandan'],
-  adminKomandanStaff: ['admin_satuan', 'komandan', 'staff_satuan'],
+  komandanOnly: ['komandan'],
   staffOnly: ['staff_satuan'],
-  prajuritShared: ['prajurit', 'komandan', 'admin_satuan'],
+  prajuritOnly: ['prajurit'],
+  satuanScoped: ['admin_satuan', 'komandan', 'staff_satuan', 'prajurit'],
   allRoles: ['super_admin', 'admin_satuan', 'komandan', 'staff_satuan', 'prajurit'],
 } as const;
 

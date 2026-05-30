@@ -128,7 +128,7 @@ export const router = createHashRouter([
 
   // ── Komandan ─────────────────────────────────────────────
   {
-    element: <ProtectedRoute allowedRoles={['komandan']} />,
+    element: <ProtectedRoute allowedRoles={G.komandanOnly} />,
     children: [
       { path: R.komandan.dashboard,    element: wrap(<KomandanDashboard />) },
       { path: R.komandan.tasks,        element: wrap(<TaskManagement />) },
@@ -158,7 +158,7 @@ export const router = createHashRouter([
 
   // ── Prajurit ─────────────────────────────────────────────
   {
-    element: <ProtectedRoute allowedRoles={['prajurit']} />,
+    element: <ProtectedRoute allowedRoles={G.prajuritOnly} />,
     children: [
       { path: R.prajurit.dashboard,  element: wrap(<PrajuritDashboard />) },
       { path: R.prajurit.gatePass,   element: wrap(<GatePassPage />) },
