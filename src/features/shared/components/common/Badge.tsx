@@ -76,11 +76,12 @@ export function LeaveStatusBadge({ status }: { status: LeaveStatus }) {
 }
 
 export function RoleBadge({ role }: { role: Role }) {
-  const map: Partial<Record<Role, { label: string; variant: BadgeVariant }>> = {
-    admin:    { label: 'Super Admin',  variant: 'gold' },
-    komandan: { label: 'Komandan',     variant: 'info' },
-    prajurit: { label: 'Prajurit',     variant: 'neutral' },
-    staf:     { label: 'Staf Operasional', variant: 'warning' },
+  const map: Record<Role, { label: string; variant: BadgeVariant }> = {
+    super_admin: { label: 'Super Admin',       variant: 'gold' },
+    admin_satuan: { label: 'Admin Satuan',      variant: 'info' },
+    komandan:    { label: 'Komandan',          variant: 'info' },
+    staff_satuan:{ label: 'Staff Operasional',  variant: 'warning' },
+    prajurit:    { label: 'Prajurit',          variant: 'neutral' },
   };
   const roleMeta = map[role];
   const label = roleMeta?.label ?? getRoleDisplayLabel(role);

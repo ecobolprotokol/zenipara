@@ -3,9 +3,9 @@ import {
   LayoutDashboard, CheckSquare, CalendarDays, Megaphone,
   UserCheck, Users, Settings, ScanLine,
 } from 'lucide-react';
-import { useAuthStore } from '@/store/authStore';
-import { useFeatureStore } from '@/store/featureStore';
-import { useUIStore } from '@/store/uiStore';
+import { useAuthStore } from '@/features/auth/authStore';
+import { useFeatureStore } from '../../store/featureStore';
+import { useUIStore } from '../../store/uiStore';
 import { useMessages } from '@/features/shared/hooks/useMessages';
 import { isPathEnabled } from '@/features/shared/lib/featureFlags';
 import { ROLE_ROUTE_PATHS } from '@/features/shared/lib/rolePermissions';
@@ -20,14 +20,13 @@ interface BottomTabItem {
 
 /** Mobile bottom tab: show max 5 primary nav items per role (spec §10.2) */
 const ADMIN_TABS: BottomTabItem[] = [
-  { path: ROLE_ROUTE_PATHS.admin.dashboard,     label: 'Beranda',    icon: <LayoutDashboard size={20} aria-hidden="true" /> },
-  { path: ROLE_ROUTE_PATHS.admin.users,         label: 'Personel',   icon: <Users size={20} aria-hidden="true" /> },
-  { path: ROLE_ROUTE_PATHS.admin.announcements, label: 'Pengumuman', icon: <Megaphone size={20} aria-hidden="true" /> },
-  { path: ROLE_ROUTE_PATHS.admin.settings,      label: 'Setelan',    icon: <Settings size={20} aria-hidden="true" /> },
+  { path: ROLE_ROUTE_PATHS.admin_satuan.dashboard,     label: 'Beranda',    icon: <LayoutDashboard size={20} aria-hidden="true" /> },
+  { path: ROLE_ROUTE_PATHS.admin_satuan.users,         label: 'Personel',   icon: <Users size={20} aria-hidden="true" /> },
+  { path: ROLE_ROUTE_PATHS.admin_satuan.announcements, label: 'Pengumuman', icon: <Megaphone size={20} aria-hidden="true" /> },
+  { path: ROLE_ROUTE_PATHS.admin_satuan.settings,      label: 'Setelan',    icon: <Settings size={20} aria-hidden="true" /> },
 ];
 
 const BOTTOM_TABS: Record<Role, BottomTabItem[]> = {
-  admin: ADMIN_TABS,
   super_admin: ADMIN_TABS,
   admin_satuan: ADMIN_TABS,
   komandan: [
@@ -44,14 +43,13 @@ const BOTTOM_TABS: Record<Role, BottomTabItem[]> = {
     { path: ROLE_ROUTE_PATHS.prajurit.attendance, label: 'Absensi',   icon: <CalendarDays size={20} aria-hidden="true" /> },
     { path: ROLE_ROUTE_PATHS.prajurit.profile,    label: 'Profil',    icon: <UserCheck size={20} aria-hidden="true" /> },
   ],
-  // guard removed
-  // Staf Operasional
-  staf: [
-    { path: ROLE_ROUTE_PATHS.staf.dashboard,      label: 'Beranda',  icon: <LayoutDashboard size={20} aria-hidden="true" /> },
-    { path: ROLE_ROUTE_PATHS.admin.users,         label: 'Personel', icon: <Users size={20} aria-hidden="true" /> },
-    { path: ROLE_ROUTE_PATHS.admin.attendance,    label: 'Absensi',  icon: <CalendarDays size={20} aria-hidden="true" /> },
-    { path: ROLE_ROUTE_PATHS.staf.leaveReview,    label: 'Izin',     icon: <UserCheck size={20} aria-hidden="true" /> },
-    { path: ROLE_ROUTE_PATHS.staf.messages,       label: 'Pesan',    icon: <Megaphone size={20} aria-hidden="true" />, hasMessageBadge: true },
+  // Staff Operasional
+  staff_satuan: [
+    { path: ROLE_ROUTE_PATHS.staff_satuan.dashboard,      label: 'Beranda',  icon: <LayoutDashboard size={20} aria-hidden="true" /> },
+    { path: ROLE_ROUTE_PATHS.admin_satuan.users,         label: 'Personel', icon: <Users size={20} aria-hidden="true" /> },
+    { path: ROLE_ROUTE_PATHS.admin_satuan.attendance,    label: 'Absensi',  icon: <CalendarDays size={20} aria-hidden="true" /> },
+    { path: ROLE_ROUTE_PATHS.staff_satuan.leaveReview,    label: 'Izin',     icon: <UserCheck size={20} aria-hidden="true" /> },
+    { path: ROLE_ROUTE_PATHS.staff_satuan.messages,       label: 'Pesan',    icon: <Megaphone size={20} aria-hidden="true" />, hasMessageBadge: true },
   ],
 };
 

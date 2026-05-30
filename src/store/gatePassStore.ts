@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 import { fetchGatePassesByUser, fetchAllGatePasses, fetchGatePassByQrToken, insertGatePass, patchGatePassStatus, rpcScanGatePass, type InsertGatePassResponse } from '@/features/shared/lib/api/gatepass';
-import { GatePass, GatePassStatus } from '@/types';
+import { GatePass, GatePassStatus } from '../types';
 import { isRoleAdmin, isRolePrajurit } from '@/features/shared/lib/rolePermissions';
-import { generateQrToken, normalizeScannedQrToken } from '@/utils/gatepass';
-import { useAuthStore } from './authStore';
+import { generateQrToken, normalizeScannedQrToken } from '../utils/gatepass';
+import { useAuthStore } from '@/features/auth/authStore';
 import { notifyDataChanged } from '@/features/shared/lib/dataSync';
 
 interface GatePassState {
@@ -207,7 +207,7 @@ export const useGatePassStore = create<GatePassState>()((set, get) => ({
   async scanGatePass(qrToken) {
     const user = useAuthStore.getState().user;
     if (!user || !isRoleAdmin(user.role)) {
-      throw new Error('Akses hanya untuk admin');
+      throw new Error('Akses hanya untuk petugas yang memiliki otorisasi scan');
     }
     const normalizedToken = normalizeScannedQrToken(qrToken);
     await rpcScanGatePass(user.id, user.role, normalizedToken);
