@@ -1,9 +1,15 @@
 /**
  * RBAC utilities untuk role hierarchy dan access control.
-  * 5 role final: super_admin, admin_satuan, komandan, staff_satuan, prajurit
-   */
+ *
+ * 5 role final:
+ *   super_admin  — akses penuh lintas satuan
+ *   admin_satuan — kelola satuan sendiri
+ *   komandan     — komando operasional satuan
+ *   staff_satuan — operasional harian satuan
+ *   prajurit     — user akhir satuan
+ */
 
-   import type { User, CommandLevel } from '@/types';
+import type { User, CommandLevel } from '@/types';
 
    export const APP_ROUTE_PATHS = {
       root:           '/',
@@ -29,6 +35,28 @@
           komandan:     'DAN',
             staff_satuan: 'STF',
               prajurit:     'PJT',
+   };
+
+   const ROLE_ALIASES: Record<string, KnownRole | string> = {
+      admin:       'admin_satuan',
+        'admin satuan': 'admin_satuan',
+          'admin_satuan': 'admin_satuan',
+            staf:        'staff_satuan',
+              staff:       'staff_satuan',
+                'staff satuan': 'staff_satuan',
+                  'staff_satuan': 'staff_satuan',
+                    'super admin': 'super_admin',
+                      super_admin:  'super_admin',
+                        komandan:    'komandan',
+                          prajurit:    'prajurit',
+   };
+
+   const ROLE_CODE_TO_ROLE: Record<string, KnownRole | string> = {
+      SAD: 'super_admin',
+        ADS: 'admin_satuan',
+          DAN: 'komandan',
+            STF: 'staff_satuan',
+              PJT: 'prajurit',
    };
 
    export const ROLE_ACCESS_MAP: Record<KnownRole, string> = {
@@ -60,7 +88,9 @@
                                                         schedule:        '/admin/schedule',
                                                             posJaga:         '/admin/pos-jaga',
                                                                 documents:       '/admin/documents',
-                                                                    settings:        '/admin/settings',
+                                        settings:        '/admin/settings',
+                                        satuan:          '/admin/satuan',
+                                        audit:           '/admin/audit',
         },
           komandan: {
                 dashboard:    '/komandan/dashboard',
@@ -173,7 +203,6 @@ export function getRoleDisplayLabel(role: string | null | undefined): string {
     case 'admin_satuan': return 'Admin Satuan';
     case 'komandan': return 'Komandan';
     case 'prajurit': return 'Prajurit';
-    case 'guard': return 'Petugas Jaga / Provost';
     default: return humanizeRole(normalized);
   }
 }
@@ -184,15 +213,6 @@ export const ROLE_OPTIONS = KNOWN_ROLES.map((role) => ({
   code: ROLE_CODE_MAP[role],
   description: ROLE_ACCESS_MAP[role],
 }));
-
-export const ROUTE_ROLE_GROUPS = {
-  adminOnly: ['super_admin'],
-  adminStaff: ['admin_satuan', 'super_admin'],
-  komandanShared: ['komandan', 'admin_satuan', 'super_admin'],
-  prajuritShared: ['prajurit', 'komandan', 'admin_satuan', 'super_admin'],
-  guardShared: ['guard', 'admin_satuan', 'super_admin'],
-  stafOnly: ['super_admin'],
-} as const;
 
 export function getRoleCode(role: string | null | undefined): string {
   const normalized = normalizeRole(role);
@@ -258,7 +278,7 @@ export function hasRole(role: string | null | undefined, expectedRole: KnownRole
 }
 
 export function isRoleAdmin(role: string | null | undefined): boolean {
-  return hasRole(role, 'super_admin');
+  return hasRole(role, 'super_admin') || hasRole(role, 'admin_satuan');
 }
 
 export function isRoleKomandan(role: string | null | undefined): boolean {
@@ -271,10 +291,6 @@ export function isRoleStaff(role: string | null | undefined): boolean {
 
 export function isRolePrajurit(role: string | null | undefined): boolean {
   return hasRole(role, 'prajurit');
-}
-
-export function isRoleGuard(role: string | null | undefined): boolean {
-  return hasRole(role, 'guard');
 }
 
 // ── Staff bidang ──────────────────────────────────────────────────────────────
@@ -314,7 +330,7 @@ const BIDANG_WRITE_MAP: Record<StaffBidang, WriteModule[]> = {
  * - Admin → always allowed (for their own admin pages)
  * - Komandan → allowed on operational modules they command
  * - Staff → allowed only for their bidang
- * - Others (prajurit, guard) → not allowed
+ * - Others (prajurit) → not allowed
  */
 export function canWrite(user: User | null, module: WriteModule): boolean {
   if (!user) return false;
@@ -389,7 +405,6 @@ export function getOperationalRoleLabel(user: User | null): string {
   switch (role) {
     case 'admin_satuan':    return getRoleDisplayLabel(user.role);
     case 'prajurit': return getRoleDisplayLabel(user.role);
-    case 'guard':    return getRoleDisplayLabel(user.role);
     case 'komandan': return getKomandanScopeLabel(user.level_komando);
     case 'staff_satuan': {
       const b = getBidangFromJabatan(user.jabatan);
@@ -405,11 +420,10 @@ export function getOperationalRoleLabel(user: User | null): string {
   }
 }
 
-// ── Guard access ──────────────────────────────────────────────────────────────
+// ── Access helpers ─────────────────────────────────────────────────────────────
 
-/** True if the user is a Guard/Provost and can read discipline notes. */
 export function canReadDisciplineNotes(user: User | null): boolean {
   if (!user) return false;
   const role = normalizeRole(user.role);
-  return isRoleGuard(role) || isRoleKomandan(role) || isRoleAdmin(role);
+  return isRoleKomandan(role) || isRoleAdmin(role);
 }

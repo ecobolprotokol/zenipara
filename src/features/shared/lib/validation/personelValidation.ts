@@ -49,7 +49,7 @@ export function validatePin(pin: unknown): ValidationError | null {
 
 /** Validate role */
 export function validateRole(role: unknown): ValidationError | null {
-  const validRoles = ['prajurit', 'staff_satuan', 'komandan', 'guard', 'admin_satuan'];
+  const validRoles = ['prajurit', 'staff_satuan', 'komandan', 'admin_satuan'];
   if (!role || !validRoles.includes(String(role))) {
     return { field: 'role', message: 'Role tidak valid' };
   }

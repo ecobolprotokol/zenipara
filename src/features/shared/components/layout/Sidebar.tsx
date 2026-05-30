@@ -48,8 +48,7 @@ const ADMIN_NAV: NavItem[] = [
   { path: ROLE_ROUTE_PATHS.admin_satuan.settings,        label: 'Pengaturan',     icon: 'Settings' },
 ];
 
-const NAV_ITEMS: Record<Role, NavItem[]> = {
-  admin: ADMIN_NAV,
+const NAV_ITEMS: Record<string, NavItem[]> = {
   super_admin: ADMIN_NAV,
   admin_satuan: ADMIN_NAV,
   komandan: [
@@ -58,14 +57,12 @@ const NAV_ITEMS: Record<Role, NavItem[]> = {
     { path: ROLE_ROUTE_PATHS.komandan.personnel,       label: 'Personel',             icon: 'Users' },
     { path: ROLE_ROUTE_PATHS.komandan.attendance,      label: 'Kehadiran',            icon: 'CalendarDays' },
     { path: ROLE_ROUTE_PATHS.komandan.apel,            label: 'Monitoring Apel',      icon: 'Bell' },
-    { path: ROLE_ROUTE_PATHS.komandan.kegiatan,        label: 'Kalender Kegiatan',    icon: 'CalendarDays' },
+    { path: ROLE_ROUTE_PATHS.komandan.evaluation,      label: 'Evaluasi',             icon: 'NotebookPen' },
     { path: ROLE_ROUTE_PATHS.komandan.laporanOps,      label: 'Laporan Ops',          icon: 'FileText' },
     { path: ROLE_ROUTE_PATHS.komandan.sprint,          label: 'Surat Perintah',       icon: 'ScrollText' },
-    { path: ROLE_ROUTE_PATHS.komandan.gatePassApproval,label: 'Approval Gate Pass',   icon: 'ClipboardCheck' },
-    { path: ROLE_ROUTE_PATHS.komandan.gatePassMonitor, label: 'Monitoring Gate Pass', icon: 'BarChart2' },
-    { path: ROLE_ROUTE_PATHS.komandan.evaluation,      label: 'Evaluasi',             icon: 'NotebookPen' },
+    { path: ROLE_ROUTE_PATHS.komandan.gatePass,        label: 'Approval Gate Pass',   icon: 'ClipboardCheck' },
+    { path: ROLE_ROUTE_PATHS.komandan.logistics,       label: 'Permintaan Logistik',  icon: 'ClipboardList' },
     { path: ROLE_ROUTE_PATHS.komandan.reports,         label: 'Laporan',              icon: 'BarChart2' },
-    { path: ROLE_ROUTE_PATHS.komandan.logisticsRequest,label: 'Permintaan Logistik',  icon: 'ClipboardList' },
     { path: ROLE_ROUTE_PATHS.komandan.messages,        label: 'Pesan',                icon: 'Megaphone' },
   ],
   prajurit: [
@@ -80,11 +77,7 @@ const NAV_ITEMS: Record<Role, NavItem[]> = {
     { path: ROLE_ROUTE_PATHS.prajurit.leave,      label: 'Permohonan Izin',   icon: 'UserCheck' },
     { path: ROLE_ROUTE_PATHS.prajurit.profile,    label: 'Profil',            icon: 'Users' },
   ],
-  guard: [
-    { path: ROLE_ROUTE_PATHS.guard.gatePassScan, label: 'Scan Gate Pass',   icon: 'ClipboardCheck' },
-    { path: ROLE_ROUTE_PATHS.guard.discipline,   label: 'Catatan Disiplin', icon: 'ScrollText' },
-  ],
-  staf: [
+  staff_satuan: [
     { path: ROLE_ROUTE_PATHS.staff_satuan.dashboard,      label: 'Pusat Staff',      icon: 'LayoutDashboard' },
     { path: ROLE_ROUTE_PATHS.admin_satuan.users,         label: 'Personel',        icon: 'Users' },
     { path: ROLE_ROUTE_PATHS.admin_satuan.attendance,    label: 'Rekap Absensi',   icon: 'ClipboardCheck' },

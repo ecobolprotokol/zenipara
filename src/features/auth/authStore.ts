@@ -231,7 +231,7 @@ const buildDemoUsers = (): User[] => {
       id: 'demo-guard',
       nrp: '4000001',
       nama: 'Deni Ramadhan',
-      role: 'guard',
+      role: 'prajurit',
       satuan: 'Batalyon 1',
       pangkat: 'Sersan Satu',
       jabatan: 'Pos Jaga Utama',
