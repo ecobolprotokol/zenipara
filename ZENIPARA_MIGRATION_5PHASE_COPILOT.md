@@ -17,14 +17,27 @@ src/
   features/
     auth/            → authStore.ts, LoginPage.tsx
     super-admin/     → pages/
-    admin/           → pages/  (admin_satuan)
-    komandan/        → pages/
-    staff/           → pages/  (staff_satuan)
-    prajurit/        → pages/
-    shared/          → lib/rolePermissions.ts, types/index.ts
+    admin/           → pages/  (legacy admin_satuan)
+    komandan/        → pages/  (legacy komandan)
+    staff/           → pages/  (legacy staff_satuan)
+    prajurit/        → pages/  (legacy prajurit)
+    command/         → pages/  (command_level)
+    staff-ops/       → pages/  (staff_ops)
+    staff-pers/      → pages/  (staff_pers)
+    staff-log/       → pages/  (staff_log)
+    unit-leader/     → pages/  (unit_leader)
+    field-officer/   → pages/  (field_officer)
+    anggota/         → pages/  (anggota)
+    shared/          → lib/rolePermissions.ts, hooks/, components/
   types/index.ts
 supabase/migrations/ → SQL migrations
 ```
+
+**Status repositori saat ini:**
+- `src/types/index.ts` sudah mengandung 7 role eksplisit plus legacy role type definitions.
+- `src/features/shared/lib/rolePermissions.ts` sudah mendukung normalisasi role baru dan alias legacy.
+- `src/app/router.tsx` sudah memiliki route blocks untuk role eksplisit baru, sambil mempertahankan beberapa block legacy sebagai transitional support.
+- `supabase/migrations/20260601_002_explicit_roles_and_new_modules.sql` sudah ada di repo; tinjau dan perbaiki jika perlu.
 
 **Role yang ADA sekarang (5 role):**
 ```
@@ -51,13 +64,12 @@ Level 6: anggota          → Prajurit biasa
 
 # FASE 1 — TYPE SYSTEM & ROLE CONSTANTS
 
-> **Tujuan:** Update semua type TypeScript dan konstanta role tanpa menyentuh UI atau DB dulu. Ini fondasi untuk semua fase berikutnya.
+> **Tujuan:** Review dan verifikasi implementasi type dan helper role saat ini, lalu bersihkan pola legacy yang masih tertinggal.
 
 ## Prompt untuk Copilot:
 
 ```
-Saya sedang migrasi role system di Zenipara dari 5 role menjadi 7 role eksplisit.
-Tolong lakukan perubahan berikut secara lengkap dan presisi:
+Repo sudah memiliki sebagian besar migrasi role eksplisit. Tinjau `src/types/index.ts` dan `src/features/shared/lib/rolePermissions.ts`, lalu perbaiki atau lengkapi:
 
 ## 1. Update `src/types/index.ts`
 
@@ -312,17 +324,20 @@ npx tsc --noEmit
 
 # FASE 2 — DATABASE MIGRATION (SQL)
 
-> **Tujuan:** Buat migration SQL baru yang menambahkan 7 role eksplisit, tabel baru untuk modul yang belum ada, dan kolom tambahan di tabel existing. TIDAK menghapus data lama.
+> **Tujuan:** Tinjau dan lengkapi migration SQL yang sudah ada untuk menambahkan 7 role eksplisit, tabel baru untuk modul yang belum ada, dan kolom tambahan di tabel existing. TIDAK menghapus data lama.
 
 ## Prompt untuk Copilot:
 
 ```
-Buat file SQL migration baru di `supabase/migrations/20260601_002_explicit_roles_and_new_modules.sql`.
+Review file migration SQL di `supabase/migrations/20260601_002_explicit_roles_and_new_modules.sql`.
 
-Ini adalah migration lanjutan dari sistem Zenipara yang sudah punya tabel:
-users, tasks, attendance, leave_requests, announcements, messages, logistics_items,
-logistics_requests, gate_pass, shift_schedules, documents, discipline_notes, audit_logs,
-satuans, kegiatan, laporan_ops, sprint, apel_sessions, apel_attendance, pos_jaga
+Pastikan file ini mencakup seluruh perubahan berikut:
+- Penambahan kolom `kompi_id` dan `peleton_id` di `public.users`
+- Penambahan nilai role eksplisit ke enum / CHECK constraint
+- Migrasi legacy role lama ke role baru secara aman
+- Penambahan helper DB baru untuk role/kompi/peleton
+- Pembuatan tabel baru untuk modul S-2 dan S-4
+- RLS policy untuk tabel baru
 
 Auth pattern: custom PIN, bukan Supabase Auth. Semua policy pakai:
 - `public.current_karyo_user_id()` → UUID user aktif
@@ -693,13 +708,13 @@ supabase db push
 
 # FASE 3 — ROUTING & PROTECTED ROUTE
 
-> **Tujuan:** Update router.tsx dan ProtectedRoute.tsx untuk mendukung 8 role (7 role + super_admin). Buat folder pages baru untuk role yang belum ada.
+> **Tujuan:** Tinjau dan sempurnakan `src/app/router.tsx` dan `src/app/ProtectedRoute.tsx` agar konsisten dengan role eksplisit baru dan transition path legacy.
 
 ## Prompt untuk Copilot:
 
 ```
-Update sistem routing Zenipara untuk mendukung 8 role eksplisit baru.
-Jangan hapus file yang sudah ada — kita akan reuse dan extend.
+Verifikasi dan perbaiki sistem routing Zenipara untuk 8 role eksplisit baru.
+Jangan hapus file yang sudah ada — gunakan ulang route blocks yang ada dan tambahkan placeholder pages jika masih hilang.
 
 ## 1. Update `src/app/ProtectedRoute.tsx`
 
