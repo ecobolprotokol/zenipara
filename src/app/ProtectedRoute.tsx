@@ -3,7 +3,7 @@ import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuthStore } from '@/features/auth/authStore';
 import { useFeatureStore } from '../store/featureStore';
 import { isPathEnabled } from '@/features/shared/lib/featureFlags';
-import { APP_ROUTE_PATHS, getRoleDefaultPath, getRoleFallbackPaths, isRoleSuperAdmin } from '@/features/shared/lib/rolePermissions';
+import { APP_ROUTE_PATHS, getRoleDefaultPath, getRoleFallbackPaths, isRoleSuperAdmin, normalizeRole } from '@/features/shared/lib/rolePermissions';
 import LoadingSpinner from '@/features/shared/components/common/LoadingSpinner';
 import type { Role } from '@/types';
 
@@ -40,7 +40,8 @@ export default function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
     return <Navigate to={APP_ROUTE_PATHS.login} replace />;
   }
 
-  if (!allowedRoles.includes(userRole)) {
+  const normalizedUserRole = normalizeRole(userRole);
+  if (!normalizedUserRole || !allowedRoles.includes(normalizedUserRole)) {
     return <Navigate to={getRoleDefaultPath(userRole) ?? APP_ROUTE_PATHS.login} replace />;
   }
 

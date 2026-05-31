@@ -71,6 +71,50 @@ const PrajuritApel      = lazy(() => import('@/features/prajurit/pages/Apel'));
 const PrajuritKegiatan  = lazy(() => import('@/features/prajurit/pages/Kegiatan'));
 const ScanPosJaga       = lazy(() => import('@/features/prajurit/pages/ScanPosJagaPage'));
 
+// ── Command Level ────────────────────────────────────────────
+const CommandDashboard   = lazy(() => import('@/features/command/pages/CommandDashboard'));
+const CommandPersonnel   = lazy(() => import('@/features/command/pages/CommandPersonnel'));
+const CommandReports     = lazy(() => import('@/features/command/pages/CommandReports'));
+const CommandDocuments   = lazy(() => import('@/features/command/pages/CommandDocuments'));
+
+// ── Staff Ops ──────────────────────────────────────────────
+const StaffOpsDashboard  = lazy(() => import('@/features/staff-ops/pages/StaffOpsDashboard'));
+const Kalatlap           = lazy(() => import('@/features/staff-ops/pages/Kalatlap'));
+const PenugasanLapangan  = lazy(() => import('@/features/staff-ops/pages/PenugasanLapangan'));
+const LaporanOpsStaff    = lazy(() => import('@/features/staff-ops/pages/LaporanOps'));
+
+// ── Staff Pers ────────────────────────────────────────────
+const StaffPersDashboard = lazy(() => import('@/features/staff-pers/pages/StaffPersDashboard'));
+const StaffPersPersonnel = lazy(() => import('@/features/staff-pers/pages/Personnel'));
+const StaffPersLeave     = lazy(() => import('@/features/staff-pers/pages/LeaveManagement'));
+const StaffPersAttendance= lazy(() => import('@/features/staff-pers/pages/AttendanceManagement'));
+
+// ── Staff Log ──────────────────────────────────────────────
+const StaffLogDashboard  = lazy(() => import('@/features/staff-log/pages/StaffLogDashboard'));
+const Inventaris         = lazy(() => import('@/features/staff-log/pages/Inventaris'));
+const Maintenance        = lazy(() => import('@/features/staff-log/pages/Maintenance'));
+const BonLogistik        = lazy(() => import('@/features/staff-log/pages/BonLogistik'));
+
+// ── Unit Leader ─────────────────────────────────────────────
+const UnitLeaderDashboard= lazy(() => import('@/features/unit-leader/pages/UnitLeaderDashboard'));
+const UnitLeaderTasks    = lazy(() => import('@/features/unit-leader/pages/TaskManagement'));
+const UnitLeaderPersonnel= lazy(() => import('@/features/unit-leader/pages/Personnel'));
+const UnitLeaderLeave    = lazy(() => import('@/features/unit-leader/pages/LeaveApproval'));
+const UnitLeaderGatepass = lazy(() => import('@/features/unit-leader/pages/GatePassApproval'));
+
+// ── Field Officer ───────────────────────────────────────────
+const FieldOfficerDashboard= lazy(() => import('@/features/field-officer/pages/FieldOfficerDashboard'));
+const FieldOfficerAbsensi  = lazy(() => import('@/features/field-officer/pages/Absensi'));
+const LaporanKemajuan      = lazy(() => import('@/features/field-officer/pages/LaporanKemajuan'));
+const FieldOfficerTasks    = lazy(() => import('@/features/field-officer/pages/MyTasks'));
+
+// ── Anggota ─────────────────────────────────────────────────
+const AnggotaDashboard   = lazy(() => import('@/features/anggota/pages/AnggotaDashboard'));
+const AnggotaProfile     = lazy(() => import('@/features/anggota/pages/Profile'));
+const AnggotaLeave       = lazy(() => import('@/features/anggota/pages/LeaveRequest'));
+const AnggotaGatepass    = lazy(() => import('@/features/anggota/pages/GatePassPage'));
+const AnggotaJadwal      = lazy(() => import('@/features/anggota/pages/Jadwal'));
+
 // ── Helper ─────────────────────────────────────────────────
 const wrap = (el: React.ReactNode) => (
   <Suspense fallback={<LoadingSpinner fullScreen />}>{el}</Suspense>
@@ -170,6 +214,85 @@ export const router = createHashRouter([
       { path: R.prajurit.apel,       element: wrap(<PrajuritApel />) },
       { path: R.prajurit.kegiatan,   element: wrap(<PrajuritKegiatan />) },
       { path: R.prajurit.scanPos,    element: wrap(<ScanPosJaga />) },
+    ],
+  },
+
+  // ── Command Level ─────────────────────────────────────────
+  {
+    element: <ProtectedRoute allowedRoles={G.commandOnly} />,
+    children: [
+      { path: R.command_level.dashboard, element: wrap(<CommandDashboard />) },
+      { path: R.command_level.personnel, element: wrap(<CommandPersonnel />) },
+      { path: R.command_level.reports,   element: wrap(<CommandReports />) },
+      { path: R.command_level.documents, element: wrap(<CommandDocuments />) },
+    ],
+  },
+
+  // ── Staff Ops ─────────────────────────────────────────────
+  {
+    element: <ProtectedRoute allowedRoles={G.staffOpsOnly} />,
+    children: [
+      { path: R.staff_ops.dashboard, element: wrap(<StaffOpsDashboard />) },
+      { path: R.staff_ops.kalatlap, element: wrap(<Kalatlap />) },
+      { path: R.staff_ops.penugasan, element: wrap(<PenugasanLapangan />) },
+      { path: R.staff_ops.laporan, element: wrap(<LaporanOpsStaff />) },
+    ],
+  },
+
+  // ── Staff Pers ───────────────────────────────────────────
+  {
+    element: <ProtectedRoute allowedRoles={G.staffPersOnly} />,
+    children: [
+      { path: R.staff_pers.dashboard, element: wrap(<StaffPersDashboard />) },
+      { path: R.staff_pers.personnel, element: wrap(<StaffPersPersonnel />) },
+      { path: R.staff_pers.leave, element: wrap(<StaffPersLeave />) },
+      { path: R.staff_pers.attendance, element: wrap(<StaffPersAttendance />) },
+    ],
+  },
+
+  // ── Staff Log ─────────────────────────────────────────────
+  {
+    element: <ProtectedRoute allowedRoles={G.staffLogOnly} />,
+    children: [
+      { path: R.staff_log.dashboard, element: wrap(<StaffLogDashboard />) },
+      { path: R.staff_log.inventaris, element: wrap(<Inventaris />) },
+      { path: R.staff_log.maintenance, element: wrap(<Maintenance />) },
+      { path: R.staff_log.bon, element: wrap(<BonLogistik />) },
+    ],
+  },
+
+  // ── Unit Leader ───────────────────────────────────────────
+  {
+    element: <ProtectedRoute allowedRoles={G.unitLeaderOnly} />,
+    children: [
+      { path: R.unit_leader.dashboard, element: wrap(<UnitLeaderDashboard />) },
+      { path: R.unit_leader.tasks, element: wrap(<UnitLeaderTasks />) },
+      { path: R.unit_leader.personnel, element: wrap(<UnitLeaderPersonnel />) },
+      { path: R.unit_leader.leave, element: wrap(<UnitLeaderLeave />) },
+      { path: R.unit_leader.gatepass, element: wrap(<UnitLeaderGatepass />) },
+    ],
+  },
+
+  // ── Field Officer ─────────────────────────────────────────
+  {
+    element: <ProtectedRoute allowedRoles={G.fieldOfficerOnly} />,
+    children: [
+      { path: R.field_officer.dashboard, element: wrap(<FieldOfficerDashboard />) },
+      { path: R.field_officer.absensi, element: wrap(<FieldOfficerAbsensi />) },
+      { path: R.field_officer.laporan, element: wrap(<LaporanKemajuan />) },
+      { path: R.field_officer.tasks, element: wrap(<FieldOfficerTasks />) },
+    ],
+  },
+
+  // ── Anggota ───────────────────────────────────────────────
+  {
+    element: <ProtectedRoute allowedRoles={G.anggotaOnly} />,
+    children: [
+      { path: R.anggota.dashboard, element: wrap(<AnggotaDashboard />) },
+      { path: R.anggota.profile, element: wrap(<AnggotaProfile />) },
+      { path: R.anggota.leave, element: wrap(<AnggotaLeave />) },
+      { path: R.anggota.gatepass, element: wrap(<AnggotaGatepass />) },
+      { path: R.anggota.jadwal, element: wrap(<AnggotaJadwal />) },
     ],
   },
 
